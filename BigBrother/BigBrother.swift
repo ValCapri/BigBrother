@@ -12,8 +12,8 @@ import UIKit
 /**
     Registers BigBrother to the shared NSURLSession (and to NSURLConnection).
 */
-public func addToSharedSession() {
-    NSURLProtocol.registerClass(BigBrother.URLProtocol.self)
+public func BigBrother_addToSharedSession() {
+    NSURLProtocol.registerClass(BigBrotherURLProtocol.self)
 }
 
 /**
@@ -21,16 +21,16 @@ public func addToSharedSession() {
 
     :param: configuration The configuration on which BigBrother will be added
 */
-public func addToSessionConfiguration(configuration: NSURLSessionConfiguration) {
+public func BigBrother_addToSessionConfiguration(configuration: NSURLSessionConfiguration) {
     // needs to be inserted at the beginning (see https://github.com/AliSoftware/OHHTTPStubs/issues/65 )
-    configuration.protocolClasses = [BigBrother.URLProtocol.self] + (configuration.protocolClasses ?? [])
+    configuration.protocolClasses = [BigBrotherURLProtocol.self] + (configuration.protocolClasses ?? [])
 }
 
 /**
     Removes BigBrother from the shared NSURLSession (and to NSURLConnection).
 */
-public func removeFromSharedSession() {
-    NSURLProtocol.unregisterClass(BigBrother.URLProtocol.self)
+public func BigBrother_removeFromSharedSession() {
+    NSURLProtocol.unregisterClass(BigBrotherURLProtocol.self)
 }
 
 /**
@@ -39,30 +39,30 @@ public func removeFromSharedSession() {
 
     :param: configuration The configuration from which BigBrother will be removed (if present)
 */
-public func removeFromSessionConfiguration(configuration: NSURLSessionConfiguration) {
-    configuration.protocolClasses = configuration.protocolClasses?.filter {  $0 !== BigBrother.URLProtocol.self }
+public func BigBrother_removeFromSessionConfiguration(configuration: NSURLSessionConfiguration) {
+    configuration.protocolClasses = configuration.protocolClasses?.filter {  $0 !== BigBrotherURLProtocol.self }
 }
 
 /**
 *  A custom NSURLProtocol that automatically manages UIApplication.sharedApplication().networkActivityIndicatorVisible.
 */
-public class URLProtocol : NSURLProtocol {
+public class BigBrotherURLProtocol : NSURLProtocol {
     
     var connection: NSURLConnection?
     var mutableData: NSMutableData?
     var response: NSURLResponse?
     
-    struct Singleton {
-        static var instance = BigBrother.Manager.sharedInstance
+    struct BigBrotherSingleton {
+        static var instance = BigBrotherManager.sharedInstance
     }
     
     /// The singleton instance.
-    public class var manager: Manager {
+    public class var manager: BigBrotherManager {
         get {
-            return Singleton.instance
+            return BigBrotherSingleton.instance
         }
         set {
-            Singleton.instance = newValue
+            BigBrotherSingleton.instance = newValue
         }
     }
     
@@ -85,7 +85,7 @@ public class URLProtocol : NSURLProtocol {
     }
     
     override public func startLoading() {
-        URLProtocol.manager.incrementActivityCount()
+        BigBrotherURLProtocol.manager.incrementActivityCount()
         
         let newRequest = request.mutableCopy() as NSMutableURLRequest
         NSURLProtocol.setProperty(true, forKey: NSStringFromClass(self.dynamicType), inRequest: newRequest)
@@ -96,7 +96,7 @@ public class URLProtocol : NSURLProtocol {
         connection?.cancel()
         connection = nil
         
-        URLProtocol.manager.decrementActivityCount()
+        BigBrotherURLProtocol.manager.decrementActivityCount()
     }
     
     // MARK: NSURLConnectionDelegate
