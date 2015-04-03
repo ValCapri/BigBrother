@@ -8,18 +8,30 @@
 
 import Foundation
 import UIKit
+import ObjectiveC
 
 /**
 *  A protocol that represents an object that can manage a network activity indicator.
 */
-@objc public protocol NetworkActivityIndicatorOwner {
-    var networkActivityIndicatorVisible: Bool { get set }
+@objc
+public protocol NetworkActivityIndicatorOwner {
+    var bb_networkActivityIndicatorVisible: Bool { get set }
 }
 
 /**
 *  UIApplication already conforms to NetworkActivityIndicatorOwner.
 */
-extension UIApplication : NetworkActivityIndicatorOwner {}
+
+extension UIApplication : NetworkActivityIndicatorOwner {
+    public var bb_networkActivityIndicatorVisible: Bool {
+        get {
+            return self.networkActivityIndicatorVisible
+        }
+        set(newValue) {
+            self.networkActivityIndicatorVisible = newValue
+        }
+    }
+}
 
 /**
    Manages manages the state of the network activity indicator in the status bar.
@@ -95,8 +107,9 @@ public class Manager {
     
     // MARK: Private
     
-    @objc private func updateNetworkActivityIndicatorVisibility() {
-        application.networkActivityIndicatorVisible = networkActivityIndicatorVisible
+    private func updateNetworkActivityIndicatorVisibility() {
+        var visible = self.networkActivityIndicatorVisible
+        self.application.bb_networkActivityIndicatorVisible = visible
     }
     
     private func updateNetworkActivityIndicatorVisibilityDelayed() {
@@ -119,7 +132,7 @@ public class Manager {
     :param: lock    The object to be used to synchronize
     :param: closure The closure that will be run in a synchronized way
 */
-private func synchronized(lock: AnyObject, closure: @autoclosure () -> ()) {
+private func synchronized(lock: AnyObject, @autoclosure closure:  () -> ()) {
     objc_sync_enter(lock)
     closure()
     objc_sync_exit(lock)

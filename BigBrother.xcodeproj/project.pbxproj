@@ -26,6 +26,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7A4C428F1ACF3F35005AB579 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		D447FA661A563C340007108E /* BigBrotherTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BigBrotherTests.swift; sourceTree = "<group>"; };
 		D49921691A5612D800B38954 /* BigBrother.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BigBrother.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D499216D1A5612D800B38954 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -81,6 +82,7 @@
 				D49921851A5612E400B38954 /* BigBrother.swift */,
 				D49921861A5612E400B38954 /* Manager.swift */,
 				D499216C1A5612D800B38954 /* Supporting Files */,
+				7A4C428F1ACF3F35005AB579 /* MyPlayground.playground */,
 			);
 			path = BigBrother;
 			sourceTree = "<group>";

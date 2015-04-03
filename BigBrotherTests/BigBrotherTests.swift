@@ -38,7 +38,7 @@ class BigBrotherTests: XCTestCase {
         let task = session.dataTaskWithURL(URL) { (data, response, error) in
             delay(0.2) {
                 expectation.fulfill()
-                XCTAssertFalse(self.mockApplication.networkActivityIndicatorVisible)
+                XCTAssertFalse(self.mockApplication.bb_networkActivityIndicatorVisible)
             }
         }
         
@@ -47,7 +47,7 @@ class BigBrotherTests: XCTestCase {
         let invisibilityDelayExpectation = expectationWithDescription("TurnOnInvisibilityDelayExpectation")
         delay(0.2) {
             invisibilityDelayExpectation.fulfill()
-            XCTAssertTrue(self.mockApplication.networkActivityIndicatorVisible)
+            XCTAssertTrue(self.mockApplication.bb_networkActivityIndicatorVisible)
         }
         
         waitForExpectationsWithTimeout(task.originalRequest.timeoutInterval + 1) { (error) in
@@ -67,7 +67,7 @@ class BigBrotherTests: XCTestCase {
 }
 
 private class MockApplication: NetworkActivityIndicatorOwner {
-    var networkActivityIndicatorVisible = false
+    @objc var bb_networkActivityIndicatorVisible = false
 }
 
 private func delay(delay:Double, closure:()->()) {
