@@ -11,29 +11,6 @@ import UIKit
 import ObjectiveC
 
 /**
-*  A protocol that represents an object that can manage a network activity indicator.
-*/
-@objc
-public protocol NetworkActivityIndicatorOwner {
-    var bb_networkActivityIndicatorVisible: Bool { get set }
-}
-
-/**
-*  UIApplication already conforms to NetworkActivityIndicatorOwner.
-*/
-
-extension UIApplication : NetworkActivityIndicatorOwner {
-    public var bb_networkActivityIndicatorVisible: Bool {
-        get {
-            return self.networkActivityIndicatorVisible
-        }
-        set(newValue) {
-            self.networkActivityIndicatorVisible = newValue
-        }
-    }
-}
-
-/**
    Manages manages the state of the network activity indicator in the status bar.
    Based on AFNetworkActivityIndicatorManager from AFNetworking.
 */
@@ -56,7 +33,7 @@ public class Manager {
     private let invisibilityDelay: NSTimeInterval = 0.17
     
     /// The responsible for owning the network activity indicator. Defaults to UIApplication.sharedApplication().
-    public let application: NetworkActivityIndicatorOwner
+    public let application: UIApplication
     
     /// Indicates whether the network activity indicator is visible.
     public var networkActivityIndicatorVisible: Bool {
@@ -70,7 +47,7 @@ public class Manager {
     
         :returns: An initializated manager
     */
-    public init(application: NetworkActivityIndicatorOwner = UIApplication.sharedApplication()){
+    public init(application: UIApplication = UIApplication.sharedApplication()){
         self.application = application
     }
     
@@ -109,7 +86,7 @@ public class Manager {
     
     private func updateNetworkActivityIndicatorVisibility() {
         var visible = self.networkActivityIndicatorVisible
-        self.application.bb_networkActivityIndicatorVisible = visible
+        self.application.networkActivityIndicatorVisible = visible
     }
     
     private func updateNetworkActivityIndicatorVisibilityDelayed() {
