@@ -10,16 +10,16 @@ import Foundation
 import UIKit
 
 /**
-    Registers BigBrother to the shared NSURLSession (and to NSURLConnection).
+Registers BigBrother to the shared NSURLSession (and to NSURLConnection).
 */
 public func addToSharedSession() {
     NSURLProtocol.registerClass(BigBrother.URLProtocol.self)
 }
 
 /**
-    Adds BigBrother to a NSURLSessionConfiguration that will be used to create a custom NSURLSession.
+Adds BigBrother to a NSURLSessionConfiguration that will be used to create a custom NSURLSession.
 
-    :param: configuration The configuration on which BigBrother will be added
+:param: configuration The configuration on which BigBrother will be added
 */
 public func addToSessionConfiguration(configuration: NSURLSessionConfiguration) {
     // needs to be inserted at the beginning (see https://github.com/AliSoftware/OHHTTPStubs/issues/65 )
@@ -27,17 +27,17 @@ public func addToSessionConfiguration(configuration: NSURLSessionConfiguration) 
 }
 
 /**
-    Removes BigBrother from the shared NSURLSession (and to NSURLConnection).
+Removes BigBrother from the shared NSURLSession (and to NSURLConnection).
 */
 public func removeFromSharedSession() {
     NSURLProtocol.unregisterClass(BigBrother.URLProtocol.self)
 }
 
 /**
-    Removes BigBrother from a NSURLSessionConfiguration.
-    You must create a new NSURLSession from the updated configuration to stop using BigBrother.
+Removes BigBrother from a NSURLSessionConfiguration.
+You must create a new NSURLSession from the updated configuration to stop using BigBrother.
 
-    :param: configuration The configuration from which BigBrother will be removed (if present)
+:param: configuration The configuration from which BigBrother will be removed (if present)
 */
 public func removeFromSessionConfiguration(configuration: NSURLSessionConfiguration) {
     configuration.protocolClasses = configuration.protocolClasses?.filter {  $0 !== BigBrother.URLProtocol.self }
@@ -59,7 +59,7 @@ public class URLProtocol : NSURLProtocol {
     /// The singleton instance.
     public class var manager: Manager {
         get {
-            return Singleton.instance
+        return Singleton.instance
         }
         set {
             Singleton.instance = newValue

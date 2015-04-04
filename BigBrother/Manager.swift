@@ -8,15 +8,15 @@
 
 import Foundation
 import UIKit
-import ObjectiveC
+
 
 /**
-   Manages manages the state of the network activity indicator in the status bar.
-   Based on AFNetworkActivityIndicatorManager from AFNetworking.
+Manages manages the state of the network activity indicator in the status bar.
+Based on AFNetworkActivityIndicatorManager from AFNetworking.
 */
 public class Manager {
     private var _activityCount: Int = 0
-   
+    
     private var activityCount: Int {
         get {
             return self._activityCount
@@ -41,11 +41,11 @@ public class Manager {
     }
     
     /**
-        Inits a manager.
+    Inits a manager.
     
-        :param: application The responsible for owning the network activity indicator. If omitted, defaults to UIApplication.sharedApplication().
+    :param: application The responsible for owning the network activity indicator. If omitted, defaults to UIApplication.sharedApplication().
     
-        :returns: An initializated manager
+    :returns: An initializated manager
     */
     public init(application: UIApplication = UIApplication.sharedApplication()){
         self.application = application
@@ -61,7 +61,7 @@ public class Manager {
     }
     
     /**
-        Increments the number of active network requests. If this number was zero before incrementing, this will start animating the status bar network activity indicator.
+    Increments the number of active network requests. If this number was zero before incrementing, this will start animating the status bar network activity indicator.
     */
     public func incrementActivityCount() {
         synchronized(self, self._activityCount += 1)
@@ -72,7 +72,7 @@ public class Manager {
     }
     
     /**
-        Decrements the number of active network requests. If this number becomes zero after decrementing, this will stop animating the status bar network activity indicator.
+    Decrements the number of active network requests. If this number becomes zero after decrementing, this will stop animating the status bar network activity indicator.
     */
     public func decrementActivityCount() {
         synchronized(self, self._activityCount = max(self._activityCount - 1, 0))
@@ -84,9 +84,8 @@ public class Manager {
     
     // MARK: Private
     
-    private func updateNetworkActivityIndicatorVisibility() {
-        var visible = self.networkActivityIndicatorVisible
-        self.application.networkActivityIndicatorVisible = visible
+    @objc private func updateNetworkActivityIndicatorVisibility() {
+        application.networkActivityIndicatorVisible = networkActivityIndicatorVisible
     }
     
     private func updateNetworkActivityIndicatorVisibilityDelayed() {
@@ -104,10 +103,10 @@ public class Manager {
 }
 
 /**
-    Runs a closure in a synchronized way.
+Runs a closure in a synchronized way.
 
-    :param: lock    The object to be used to synchronize
-    :param: closure The closure that will be run in a synchronized way
+:param: lock    The object to be used to synchronize
+:param: closure The closure that will be run in a synchronized way
 */
 private func synchronized(lock: AnyObject, @autoclosure closure:  () -> ()) {
     objc_sync_enter(lock)
