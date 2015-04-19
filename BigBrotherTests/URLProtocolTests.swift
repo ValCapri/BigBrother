@@ -48,7 +48,7 @@ class URLProtocolTests: XCTestCase {
         }
         swizzledMethods = []
         
-        NSURLProtocol.unregisterClass(BigBrother.URLProtocol)
+        NSURLProtocol.unregisterClass(BigBrother.BigBrotherURLProtocol)
         NSURLProtocol.registeredClasses = NSMutableArray()
         
         super.tearDown()
@@ -58,7 +58,7 @@ class URLProtocolTests: XCTestCase {
         let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
         let previousNumberOfProtocols = configuration.protocolClasses?.count ?? 0
         
-        BigBrother.addToSessionConfiguration(configuration)
+        BigBrother.BigBrother_addToSessionConfiguration(configuration)
         
         let numberOfProtocols = configuration.protocolClasses?.count ?? 0
         
@@ -66,16 +66,16 @@ class URLProtocolTests: XCTestCase {
         XCTAssertNotNil(configuration.protocolClasses)
         
         let protocols = configuration.protocolClasses!
-        XCTAssertTrue(contains(protocols) { $0 === BigBrother.URLProtocol.self } )
+        XCTAssertTrue(contains(protocols) { $0 === BigBrother.BigBrotherURLProtocol.self } )
     }
     
     func testRemoveFromSessionConfiguration() {
         let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
-        BigBrother.addToSessionConfiguration(configuration)
+        BigBrother.BigBrother_addToSessionConfiguration(configuration)
         let previousNumberOfProtocols = configuration.protocolClasses?.count ?? 0
         
         
-        BigBrother.removeFromSessionConfiguration(configuration)
+        BigBrother.BigBrother_removeFromSessionConfiguration(configuration)
         
         let numberOfProtocols = configuration.protocolClasses?.count ?? 0
         
@@ -83,31 +83,31 @@ class URLProtocolTests: XCTestCase {
         XCTAssertNotNil(configuration.protocolClasses)
         
         let protocols = configuration.protocolClasses!
-        XCTAssertFalse(contains(protocols) { $0 === BigBrother.URLProtocol.self } )
+        XCTAssertFalse(contains(protocols) { $0 === BigBrother.BigBrotherURLProtocol.self } )
     }
     
     func testAddToSharedSession() {
         let previousNumberOfProtocols = NSURLProtocol.registeredClasses.count
         
-        BigBrother.addToSharedSession()
+        BigBrother.BigBrother_addToSharedSession()
         
         let numberOfProtocols = NSURLProtocol.registeredClasses.count
         XCTAssertEqual(numberOfProtocols, previousNumberOfProtocols + 1)
         
-        XCTAssertTrue(contains(NSURLProtocol.registeredClasses) { $0 === BigBrother.URLProtocol.self } )
+        XCTAssertTrue(contains(NSURLProtocol.registeredClasses) { $0 === BigBrother.BigBrotherURLProtocol.self } )
     }
     
     func testRemoveFromSharedSession() {
-        BigBrother.addToSharedSession()
+        BigBrother.BigBrother_addToSharedSession()
         
         let previousNumberOfProtocols = NSURLProtocol.registeredClasses.count
         
-        BigBrother.removeFromSharedSession()
+        BigBrother.BigBrother_removeFromSharedSession()
         
         let numberOfProtocols = NSURLProtocol.registeredClasses.count
         XCTAssertEqual(numberOfProtocols, previousNumberOfProtocols - 1)
         
-        XCTAssertFalse(contains(NSURLProtocol.registeredClasses) { $0 === BigBrother.URLProtocol.self } )
+        XCTAssertFalse(contains(NSURLProtocol.registeredClasses) { $0 === BigBrother.BigBrotherURLProtocol.self } )
     }
 }
 

@@ -11,17 +11,15 @@ import XCTest
 import BigBrother
 
 class BigBrotherTests: XCTestCase {
-
-    let mockApplication: NetworkActivityIndicatorOwner = MockApplication()
     
     override func setUp() {
         super.setUp()
         
-        BigBrother.URLProtocol.manager = BigBrother.Manager(application: mockApplication)
+        BigBrother.BigBrotherURLProtocol.manager = BigBrother.BigBrotherManager(application: UIApplication.sharedApplication())
     }
     
     override func tearDown() {
-        BigBrother.URLProtocol.manager = BigBrother.Manager()
+        BigBrother.BigBrotherURLProtocol.manager = BigBrother.BigBrotherManager()
         
         super.tearDown()
     }
@@ -29,7 +27,7 @@ class BigBrotherTests: XCTestCase {
     func testThatNetworkActivityIndicationTurnsOffWithURL(URL: NSURL) {
         let configuration = NSURLSessionConfiguration.defaultSessionConfiguration()
         
-        BigBrother.addToSessionConfiguration(configuration)
+        BigBrother.BigBrother_addToSessionConfiguration(configuration)
         
         let session = NSURLSession(configuration: configuration)
         
@@ -38,7 +36,7 @@ class BigBrotherTests: XCTestCase {
         let task = session.dataTaskWithURL(URL) { (data, response, error) in
             delay(0.2) {
                 expectation.fulfill()
-                XCTAssertFalse(self.mockApplication.bb_networkActivityIndicatorVisible)
+                XCTAssertFalse(UIApplication.sharedApplication().networkActivityIndicatorVisible)
             }
         }
         
@@ -47,7 +45,7 @@ class BigBrotherTests: XCTestCase {
         let invisibilityDelayExpectation = expectationWithDescription("TurnOnInvisibilityDelayExpectation")
         delay(0.2) {
             invisibilityDelayExpectation.fulfill()
-            XCTAssertTrue(self.mockApplication.bb_networkActivityIndicatorVisible)
+            XCTAssertFalse(UIApplication.sharedApplication().networkActivityIndicatorVisible)
         }
         
         waitForExpectationsWithTimeout(task.originalRequest.timeoutInterval + 1) { (error) in
@@ -64,10 +62,6 @@ class BigBrotherTests: XCTestCase {
         let URL =  NSURL(string: "http://httpbin.org/status/500")!
         testThatNetworkActivityIndicationTurnsOffWithURL(URL)
     }
-}
-
-private class MockApplication: NetworkActivityIndicatorOwner {
-    @objc var bb_networkActivityIndicatorVisible = false
 }
 
 private func delay(delay:Double, closure:()->()) {

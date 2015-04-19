@@ -14,7 +14,7 @@ import UIKit
 Manages manages the state of the network activity indicator in the status bar.
 Based on AFNetworkActivityIndicatorManager from AFNetworking.
 */
-public class Manager {
+public class BigBrotherManager {
     private var _activityCount: Int = 0
     
     private var activityCount: Int {
@@ -52,12 +52,12 @@ public class Manager {
     }
     
     /// The singleton instance.
-    public class var sharedInstance: Manager {
-        struct Singleton {
-            static let instance = Manager()
+    public class var sharedInstance: BigBrotherManager {
+        struct BigBrotherSingleton {
+            static let instance = BigBrotherManager()
         }
         
-        return Singleton.instance
+        return BigBrotherSingleton.instance
     }
     
     /**
